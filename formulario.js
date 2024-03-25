@@ -8,31 +8,34 @@ function validarCorreo(correo) {
 document.addEventListener('DOMContentLoaded', function () {
     'use strict';
 
-    // Obtener el formulario
     var form = document.querySelector('.needs-validation');
 
-    // Manejar el evento de envío del formulario
     form.addEventListener('submit', function (event) {
-        // Detener el envío del formulario si la validación no es exitosa
-        if (!form.checkValidity() || !validarCorreo(form.email.value)) {
+        var emailInput = document.getElementById('emailInput');
+        var nombreInput = document.getElementById('nombreInput');
+        if (!form.checkValidity()) {
             event.preventDefault();
             event.stopPropagation();
-
-            // Mostrar un mensaje de error para el campo de correo electrónico
-            var emailInput = document.getElementById('emailInput');
-            emailInput.classList.add('is-invalid');
+            if(!validarCorreo(form.email.value)) {
+                emailInput.classList.add('is-invalid');
+            } else {
+                emailInput.classList.remove('is-invalid');
+            }
+            if(form.nombre.value.trim() === '') {
+                nombreInput.classList.add('is-invalid');
+            } else {
+                nombreInput.classList.remove('is-invalid');
+            }
+            
             form.classList.remove('was-validated');
         } else {
-            // Agregar la clase 'was-validated' al formulario para mostrar los estilos de validación de Bootstrap
             event.preventDefault();
             event.stopPropagation();
             form.classList.add('was-validated');
+            alert("Formulario enviado!");
         }
-
-        
     });
 
-    // Manejar el evento de cambio del campo de correo electrónico para eliminar la clase 'is-invalid' si es necesario
     form.email.addEventListener('input', function () {
         var emailInput = document.getElementById('emailInput');
         if (validarCorreo(this.value)) {
@@ -41,4 +44,14 @@ document.addEventListener('DOMContentLoaded', function () {
             emailInput.classList.add('is-invalid');
         }
     });
+
+    form.nombre.addEventListener('input', function () {
+        var nombreInput = document.getElementById('nombreInput');
+        if (this.value.trim() !== '') {
+            nombreInput.classList.remove('is-invalid');
+        } else {
+            nombreInput.classList.add('is-invalid');
+        }
+    });
 });
+
